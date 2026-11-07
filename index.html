@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lola R Bhoopalam | Data Science & Mathematics</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;1,400&display=swap"
+        rel="stylesheet">
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    },
+                    colors: {
+                        slateBg: '#0F172A',
+                        cardBg: '#1E293B',
+                        accentEmerald: '#10B981',
+                        accentTeal: '#14B8A6',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-card:hover {
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .tab-btn.active {
+            background-color: #10B981;
+            color: #0F172A;
+            font-weight: 600;
+        }
+
+        /* Toast notification */
+        #toast {
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="bg-slateBg text-slate-100 font-sans min-h-screen selection:bg-emerald-500 selection:text-slate-950">
+
+    <!-- Toast Notification -->
+    <div id="toast"
+        class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 bg-emerald-500 text-slate-950 px-4 py-2.5 rounded-xl shadow-xl font-semibold text-sm flex items-center gap-2">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toastMsg">Copied to clipboard!</span>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 glass-card border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="#" class="font-bold text-lg text-white tracking-tight flex items-center gap-2">
+                Lola R Bhoopalam
+            </a>
+
+            <nav class="hidden md:flex space-x-8 text-sm font-medium text-slate-300">
+                <a href="#about" class="hover:text-emerald-400 transition-colors">About</a>
+                <a href="#metrics" class="hover:text-emerald-400 transition-colors">Overview</a>
+                <a href="#experience" class="hover:text-emerald-400 transition-colors">Leadership</a>
+                <a href="#skills" class="hover:text-emerald-400 transition-colors">Skills</a>
+                <a href="#education" class="hover:text-emerald-400 transition-colors">Education</a>
+            </nav>
+
+            <!-- Contact Dropdown Menu -->
+            <div class="relative">
+                <button onclick="toggleContactDropdown(event)"
+                    class="px-4 py-2 text-xs font-semibold rounded-full bg-emerald-500 text-slate-950 hover:bg-emerald-400 transition-all flex items-center gap-2 shadow-md">
+                    <span>Contact</span>
+                    <i class="fa-solid fa-chevron-down text-[10px]"></i>
+                </button>
+
+                <div id="contactDropdown"
+                    class="hidden absolute right-0 mt-3 w-72 glass-card rounded-2xl p-4 shadow-2xl border border-slate-700 space-y-3 z-50">
+                    <div class="text-xs font-semibold text-slate-400 uppercase tracking-wider px-1">Get in Touch</div>
+
+                    <!-- Phone -->
+                    <div
+                        class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 transition-colors flex items-center justify-between group">
+                        <div class="flex items-center gap-3 overflow-hidden">
+                            <i class="fa-solid fa-phone text-emerald-400 text-sm"></i>
+                            <div class="truncate">
+                                <p class="text-[10px] text-slate-400">Phone</p>
+                                <a href="tel:+919448101666"
+                                    class="text-xs text-slate-200 font-medium hover:text-white">+91 9448101666</a>
+                            </div>
+                        </div>
+                        <button onclick="copyToClipboard('+919448101666', 'Phone number copied!')"
+                            class="text-slate-400 hover:text-emerald-400 p-1.5" title="Copy Phone">
+                            <i class="fa-regular fa-copy text-xs"></i>
+                        </button>
+                    </div>
+
+                    <!-- Email -->
+                    <div
+                        class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 transition-colors flex items-center justify-between group">
+                        <div class="flex items-center gap-3 overflow-hidden">
+                            <i class="fa-solid fa-envelope text-teal-400 text-sm"></i>
+                            <div class="truncate">
+                                <p class="text-[10px] text-slate-400">Email</p>
+                                <a href="mailto:lolabhoopalam06@gmail.com"
+                                    class="text-xs text-slate-200 font-medium hover:text-white truncate block">lolabhoopalam06@gmail.com</a>
+                            </div>
+                        </div>
+                        <button onclick="copyToClipboard('lolabhoopalam06@gmail.com', 'Email copied!')"
+                            class="text-slate-400 hover:text-emerald-400 p-1.5" title="Copy Email">
+                            <i class="fa-regular fa-copy text-xs"></i>
+                        </button>
+                    </div>
+
+                    <!-- LinkedIn -->
+                    <a href="https://www.linkedin.com/in/lola-r-bhoopalam" target="_blank" rel="noopener noreferrer"
+                        class="p-2.5 rounded-xl bg-slate-800/80 hover:bg-slate-800 transition-colors flex items-center justify-between group block">
+                        <div class="flex items-center gap-3">
+                            <i class="fa-brands fa-linkedin text-cyan-400 text-sm"></i>
+                            <div>
+                                <p class="text-[10px] text-slate-400">LinkedIn</p>
+                                <span
+                                    class="text-xs text-slate-200 font-medium group-hover:text-white">lola-r-bhoopalam</span>
+                            </div>
+                        </div>
+                        <i
+                            class="fa-solid fa-arrow-up-right-from-square text-xs text-slate-400 group-hover:text-cyan-400"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-20">
+
+        <!-- HERO SECTION -->
+        <section class="py-12 md:py-16 flex flex-col items-start justify-center">
+            <span
+                class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-800 text-emerald-400 text-xs font-medium mb-6 border border-slate-700">
+                BSc Data Science & Mathematics • Christ University, Bangalore
+            </span>
+
+            <h1 class="text-4xl sm:text-6xl font-bold tracking-tight text-white mb-6 leading-tight">
+                Combining quantitative analysis <br class="hidden sm:inline" />
+                with <span class="font-serif italic text-emerald-400 font-normal">operational leadership.</span>
+            </h1>
+
+            <p class="max-w-3xl text-base sm:text-lg text-slate-300 mb-8 leading-relaxed">
+                Motivated and detail-oriented BSc Data Science and Mathematics student at Christ University, Bangalore,
+                eager to develop strong analytical and programming skills. Seeking opportunities to apply theoretical
+                knowledge in real-world data analysis and problem-solving to contribute effectively to team projects
+                while growing professionally in the field of data science.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-4">
+                <button onclick="toggleContactDropdown(event)"
+                    class="px-6 py-3 rounded-xl bg-emerald-500 text-slate-950 font-bold hover:bg-emerald-400 transition-all flex items-center gap-2">
+                    <span>Get in Touch</span>
+                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                </button>
+                <a href="#experience"
+                    class="px-6 py-3 rounded-xl glass-card text-white font-medium hover:bg-slate-800 transition-all">
+                    View Leadership Experience
+                </a>
+            </div>
+        </section>
+
+        <!-- ABOUT / CAREER OBJECTIVE -->
+        <section id="about" class="scroll-mt-24">
+            <div class="glass-card rounded-3xl p-8 sm:p-10 border border-slate-800">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                    <div>
+                        <h2 class="text-xs uppercase tracking-widest text-emerald-400 font-semibold mb-1">Career
+                            Objective</h2>
+                        <h3 class="text-2xl sm:text-3xl font-bold text-white">Data Science & Analytical Focus</h3>
+                    </div>
+                    <span
+                        class="text-xs text-slate-400 bg-slate-800 px-3 py-1 rounded-full border border-slate-700 w-fit">Expected
+                        Graduation: 2028</span>
+                </div>
+                <p class="text-slate-300 text-base leading-relaxed">
+                    Motivated and detail-oriented BSc Data Science and Mathematics student at Christ University,
+                    Bangalore, eager to develop strong analytical and programming skills. Seeking opportunities to apply
+                    theoretical knowledge in real-world data analysis and problem-solving to contribute effectively to
+                    team projects while growing professionally in the field of data science.
+                </p>
+            </div>
+        </section>
+
+        <!-- DASHBOARD & CHARTS -->
+        <section id="metrics" class="scroll-mt-24 space-y-6">
+            <div>
+                <h2 class="text-xs uppercase tracking-widest text-emerald-400 font-semibold mb-1">Impact & Highlights
+                </h2>
+                <h3 class="text-3xl font-bold text-white">Key Achievements</h3>
+            </div>
+
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="text-3xl font-bold text-emerald-400 mb-1">10,000</div>
+                    <div class="text-xs font-semibold text-white uppercase tracking-wider mb-1">Attendees Footfall</div>
+                    <div class="text-xs text-slate-400">Phenomenon Literary & Cultural Fest</div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="text-3xl font-bold text-teal-400 mb-1">200+</div>
+                    <div class="text-xs font-semibold text-white uppercase tracking-wider mb-1">Volunteers Managed</div>
+                    <div class="text-xs text-slate-400">Data-mapped shift allocation</div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="text-3xl font-bold text-cyan-400 mb-1">3.89</div>
+                    <div class="text-xs font-semibold text-white uppercase tracking-wider mb-1">Semester 2 GPA</div>
+                    <div class="text-xs text-slate-400">Christ University (Sem 1 GPA: 3.75)</div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl">
+                    <div class="text-3xl font-bold text-emerald-300 mb-1">Top 10</div>
+                    <div class="text-xs font-semibold text-white uppercase tracking-wider mb-1">Ambassadors Selected
+                    </div>
+                    <div class="text-xs text-slate-400">Out of 240 for Japanese Delegation</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2 glass-card p-6 rounded-2xl border border-slate-800">
+                    <h4 class="text-sm font-semibold text-white mb-4">Academic Progression Benchmark</h4>
+                    <div class="h-60 relative">
+                        <canvas id="academicChart"></canvas>
+                    </div>
+                </div>
+                <div class="glass-card p-6 rounded-2xl border border-slate-800">
+                    <h4 class="text-sm font-semibold text-white mb-4">Core Focus Area Allocation</h4>
+                    <div class="h-60 relative flex items-center justify-center">
+                        <canvas id="skillsChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LEADERSHIP & CO-CURRICULAR ACHIEVEMENTS -->
+        <section id="experience" class="scroll-mt-24 space-y-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h2 class="text-xs uppercase tracking-widest text-emerald-400 font-semibold mb-1">Leadership</h2>
+                    <h3 class="text-3xl font-bold text-white">Leadership & Co-Curricular Achievements</h3>
+                </div>
+                <div class="flex flex-wrap gap-2 text-xs" id="filterContainer">
+                    <button onclick="filterExperience('all')"
+                        class="tab-btn active px-3.5 py-1.5 rounded-lg border border-slate-700 text-slate-300 transition-all">All
+                        Roles</button>
+                    <button onclick="filterExperience('logistics')"
+                        class="tab-btn px-3.5 py-1.5 rounded-lg border border-slate-700 text-slate-300 transition-all">Logistics</button>
+                    <button onclick="filterExperience('cultural')"
+                        class="tab-btn px-3.5 py-1.5 rounded-lg border border-slate-700 text-slate-300 transition-all">Cultural
+                        & Events</button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="experienceCards">
+
+                <!-- Phenomenon Fest -->
+                <div class="exp-card glass-card p-6 rounded-2xl border border-slate-800 flex flex-col justify-between"
+                    data-category="logistics">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-lg font-bold text-white">Head of Logistics & Organizing Committee Member
+                            </h4>
+                            <span
+                                class="text-xs font-medium text-slate-400 bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700 shrink-0 ml-2">2024-2025</span>
+                        </div>
+                        <p class="text-xs font-semibold text-emerald-400 mb-3">Phenomenon (Literary & Cultural Fest)</p>
+                        <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
+                            <li>Managed large-scale resource allocation, budgeting, and layout logistics for a
+                                mega-scale fest achieving a footfall of around 10,000 attendees.</li>
+                            <li>Utilized data-tracking and spreadsheets to optimize vendor contracts, floor layouts, and
+                                commercial stall operations.</li>
+                            <li>Appointed as Head of Volunteers to recruit, data-map, allocate, and manage schedules for
+                                over 200 students.</li>
+                            <li>Acted as primary cross-functional liaison between faculty, student participants, venue
+                                heads, and judges to ensure smooth execution.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Bifrost Fest -->
+                <div class="exp-card glass-card p-6 rounded-2xl border border-slate-800 flex flex-col justify-between"
+                    data-category="logistics">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-lg font-bold text-white">Head of Logistics & Organizing Committee Member
+                            </h4>
+                            <span
+                                class="text-xs font-medium text-slate-400 bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700 shrink-0 ml-2">2024-2025</span>
+                        </div>
+                        <p class="text-xs font-semibold text-teal-400 mb-3">Bifrost (Commerce Fest)</p>
+                        <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
+                            <li>Directed all logistical planning, multi-venue resource allocation matrices, and
+                                operations for an inter-school fest hosting over 500 external participants.</li>
+                            <li>Collaborated dynamically with the organizing committee to deliver an expertly
+                                coordinated, data-backed event framework.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Josephite-Run Marathon -->
+                <div class="exp-card glass-card p-6 rounded-2xl border border-slate-800 flex flex-col justify-between"
+                    data-category="logistics">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-lg font-bold text-white">Head of Logistics</h4>
+                            <span
+                                class="text-xs font-medium text-slate-400 bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700 shrink-0 ml-2">2023-2024</span>
+                        </div>
+                        <p class="text-xs font-semibold text-cyan-400 mb-3">Josephite-Run Marathon</p>
+                        <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
+                            <li>Oversaw large-scale operations, analyzed route resource metrics, and managed equipment
+                                distribution for a high-profile charity fundraising marathon to maximize community
+                                contributions.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- International Cultural Exchange -->
+                <div class="exp-card glass-card p-6 rounded-2xl border border-slate-800 flex flex-col justify-between"
+                    data-category="cultural">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-lg font-bold text-white">Student Ambassador</h4>
+                            <span
+                                class="text-xs font-medium text-slate-400 bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700 shrink-0 ml-2">Grade
+                                12</span>
+                        </div>
+                        <p class="text-xs font-semibold text-emerald-400 mb-3">International Cultural Exchange</p>
+                        <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
+                            <li>Selected as one of only 10 student ambassadors out of a competitive cohort of 240 to
+                                interface with a visiting delegation of Japanese students.</li>
+                            <li>Facilitated cross-cultural dialogue, shared regional insights, and participated in
+                                interactive workshops to strengthen global school relations.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Ceremony Organizer - Meraki -->
+                <div class="exp-card glass-card p-6 rounded-2xl border border-slate-800 flex flex-col justify-between"
+                    data-category="cultural">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-lg font-bold text-white">Ceremony Organizer</h4>
+                            <span
+                                class="text-xs font-medium text-slate-400 bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700 shrink-0 ml-2">2023-2024
+                                & 2024-2025</span>
+                        </div>
+                        <p class="text-xs font-semibold text-teal-400 mb-3">Meraki (Art Festival)</p>
+                        <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
+                            <li>Conceptualized and successfully executed the creative entry and opening ceremonies for
+                                consecutive editions of the art festival, establishing the thematic tone for the events.
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Event Volunteer - Bifrost -->
+                <div class="exp-card glass-card p-6 rounded-2xl border border-slate-800 flex flex-col justify-between"
+                    data-category="cultural">
+                    <div>
+                        <div class="flex justify-between items-start mb-2">
+                            <h4 class="text-lg font-bold text-white">Event Volunteer</h4>
+                            <span
+                                class="text-xs font-medium text-slate-400 bg-slate-800 px-2.5 py-1 rounded-full border border-slate-700 shrink-0 ml-2">2023-2024</span>
+                        </div>
+                        <p class="text-xs font-semibold text-cyan-400 mb-3">Bifrost (Commerce Fest)</p>
+                        <ul class="text-xs text-slate-300 space-y-2 list-disc list-inside leading-relaxed">
+                            <li>Assisted the organizing committee with foundational on-ground coordination and floor
+                                management during the annual inter-school fest.</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SKILLS & ADDITIONAL INFORMATION -->
+        <section id="skills" class="scroll-mt-24 space-y-6">
+            <div>
+                <h2 class="text-xs uppercase tracking-widest text-emerald-400 font-semibold mb-1">Competencies</h2>
+                <h3 class="text-3xl font-bold text-white">Skills & Additional Information</h3>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Technical Skills (Titles Only) -->
+                <div class="glass-card p-6 rounded-2xl border border-slate-800">
+                    <h4 class="text-base font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-code text-emerald-400 text-sm"></i> Technical Skills
+                    </h4>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <span
+                            class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Python</span>
+                        <span
+                            class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Java</span>
+                        <span
+                            class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">SQL</span>
+                        <span
+                            class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Microsoft
+                            Excel</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Data
+                            Analysis</span>
+                    </div>
+                </div>
+
+                <!-- Soft Skills -->
+                <div class="glass-card p-6 rounded-2xl border border-slate-800">
+                    <h4 class="text-base font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-users text-teal-400 text-sm"></i> Soft Skills
+                    </h4>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <span
+                            class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Teamwork
+                            & Leadership</span>
+                        <span
+                            class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Problem-solving</span>
+                        <span
+                            class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Cross-functional
+                            Communication</span>
+                        <span
+                            class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Resource
+                            Allocation</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Vendor
+                            Management</span>
+                    </div>
+                </div>
+
+                <!-- Languages Known -->
+                <div class="glass-card p-6 rounded-2xl border border-slate-800">
+                    <h4 class="text-base font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-language text-cyan-400 text-sm"></i> Languages Known
+                    </h4>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">English
+                            (Fluent)</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Kannada
+                            (Fluent)</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Hindi
+                            (Fluent)</span>
+                        <span
+                            class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Telugu</span>
+                    </div>
+                </div>
+
+                <!-- Interests -->
+                <div class="glass-card p-6 rounded-2xl border border-slate-800">
+                    <h4 class="text-base font-bold text-white mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-heart text-emerald-300 text-sm"></i> Personal Interests
+                    </h4>
+                    <div class="flex flex-wrap gap-2 text-xs">
+                        <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Solving
+                            puzzles and logical problems</span>
+                        <span class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Event
+                            Management</span>
+                        <span
+                            class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 border border-slate-700">Intercultural
+                            exchange</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EDUCATION -->
+        <section id="education" class="scroll-mt-24 space-y-6">
+            <div>
+                <h2 class="text-xs uppercase tracking-widest text-emerald-400 font-semibold mb-1">Education</h2>
+                <h3 class="text-3xl font-bold text-white">Academic Qualifications</h3>
+            </div>
+
+            <div class="space-y-4">
+                <div
+                    class="glass-card p-6 rounded-2xl border border-slate-800 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                    <div>
+                        <h4 class="text-lg font-bold text-white">Christ University, Bangalore</h4>
+                        <p class="text-sm font-semibold text-emerald-400">Bachelor of Science (BSc) in Data Science and
+                            Mathematics</p>
+                        <p class="text-xs text-slate-300 mt-2.5">
+                            <span class="font-semibold text-slate-200">Academic Performance:</span> Semester 1 GPA:
+                            3.75/4 | Semester 2 GPA: 3.89/4
+                        </p>
+                    </div>
+                    <span
+                        class="text-xs font-medium text-slate-300 bg-slate-800 px-3.5 py-1.5 rounded-full border border-slate-700 shrink-0 w-fit">Expected
+                        Graduation: 2028</span>
+                </div>
+
+                <div
+                    class="glass-card p-6 rounded-2xl border border-slate-800 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                    <div>
+                        <h4 class="text-base font-bold text-white">St. Joseph's Boys' High School, Bangalore</h4>
+                        <p class="text-sm font-semibold text-teal-400">Class XII (Commerce with Mathematics)</p>
+                        <p class="text-xs text-slate-300 mt-2.5">
+                            <span class="font-semibold text-slate-200">Academic Performance:</span> 90.25%
+                        </p>
+                    </div>
+                    <span
+                        class="text-xs font-medium text-slate-300 bg-slate-800 px-3.5 py-1.5 rounded-full border border-slate-700 shrink-0 w-fit">Year
+                        of Completion: 2025</span>
+                </div>
+
+                <div
+                    class="glass-card p-6 rounded-2xl border border-slate-800 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+                    <div>
+                        <h4 class="text-base font-bold text-white">Baldwin Girls' High School, Bangalore</h4>
+                        <p class="text-sm font-semibold text-cyan-400">Class X</p>
+                        <p class="text-xs text-slate-300 mt-2.5">
+                            <span class="font-semibold text-slate-200">Academic Performance:</span> 94.4%
+                        </p>
+                    </div>
+                    <span
+                        class="text-xs font-medium text-slate-300 bg-slate-800 px-3.5 py-1.5 rounded-full border border-slate-700 shrink-0 w-fit">Year
+                        of Completion: 2023</span>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="mt-20 border-t border-slate-800 glass-card">
+        <div
+            class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
+            <p>Lola R Bhoopalam • Christ University, Bangalore</p>
+            <p>&copy; <span id="year"></span> All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE JAVASCRIPT LOGIC -->
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Contact Dropdown Toggle
+        function toggleContactDropdown(e) {
+            e.stopPropagation();
+            const dropdown = document.getElementById('contactDropdown');
+            dropdown.classList.toggle('hidden');
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('contactDropdown');
+            if (!dropdown.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+
+        // Copy to clipboard with toast notification
+        function copyToClipboard(text, message) {
+            const tempInput = document.createElement("input");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand("copy");
+            document.body.removeChild(tempInput);
+
+            showToast(message);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2200);
+        }
+
+        // Category Filter for Experience
+        function filterExperience(category) {
+            const cards = document.querySelectorAll('.exp-card');
+            const buttons = document.querySelectorAll('#filterContainer .tab-btn');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            cards.forEach(card => {
+                if (category === 'all' || card.getAttribute('data-category') === category) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        // Initialize Chart.js
+        window.addEventListener('DOMContentLoaded', () => {
+            const academicCtx = document.getElementById('academicChart').getContext('2d');
+            new Chart(academicCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Class X', 'Class XII', 'CU Sem 1', 'CU Sem 2'],
+                    datasets: [
+                        {
+                            label: 'GPA (Scale 4.0)',
+                            data: [null, null, 3.75, 3.89],
+                            borderColor: '#10B981',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            fill: true,
+                            tension: 0.3,
+                            yAxisID: 'yGPA'
+                        },
+                        {
+                            label: 'Percentage (%)',
+                            data: [94.4, 90.25, null, null],
+                            borderColor: '#14B8A6',
+                            borderDash: [4, 4],
+                            yAxisID: 'yPercent'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { ticks: { color: '#94A3B8' }, grid: { color: 'rgba(255, 255, 255, 0.05)' } },
+                        yGPA: { type: 'linear', position: 'left', min: 3.0, max: 4.0, ticks: { color: '#10B981' } },
+                        yPercent: { type: 'linear', position: 'right', min: 80, max: 100, ticks: { color: '#14B8A6' } }
+                    }
+                }
+            });
+
+            const skillsCtx = document.getElementById('skillsChart').getContext('2d');
+            new Chart(skillsCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Event Logistics', 'Data Analytics', 'Leadership', 'Cross-Cultural Comm'],
+                    datasets: [{
+                        data: [35, 25, 25, 15],
+                        backgroundColor: ['#10B981', '#14B8A6', '#06B6D4', '#3B82F6'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom', labels: { color: '#94A3B8', boxWidth: 10 } } },
+                    cutout: '75%'
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
